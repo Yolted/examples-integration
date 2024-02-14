@@ -1,0 +1,81 @@
+.topbar-wrapper img[alt="Swagger UI"], .topbar-wrapper span {
+    visibility: hidden;
+}
+
+
+.topbar-wrapper .link:after {
+    content: 'Yolted Integration Docs';
+    color: #fff;
+    visibility: visible;
+    display: block;
+    position: absolute;
+    padding: 15px;
+}
+
+/*
+.swagger-ui .topbar{
+    
+    background-color: rgb(45, 45, 45);
+}
+
+
+.swagger-ui .topbar .download-url-wrapper .select-label select {
+    border-color: #F07323;
+}
+
+.swagger-ui .info .title small:last-child {
+    background-color: #F07323 !important;
+}
+
+
+
+body{
+    background : rgb(31, 31, 31)
+}
+
+.swagger-ui .info .title{
+    color:#d3d3d3;
+}
+.swagger-ui .opblock-tag.no-desc span{
+    color:#d3d3d3;  
+}
+.swagger-ui .model-title{
+    color:#d3d3d3;  
+}
+
+
+.swagger-ui .scheme-container{
+    background: rgba(17, 17, 17, 0.3) !important;
+}
+
+.swagger-ui .opblock .opblock-summary-path{
+    color:#d3d3d3;  
+}
+
+.swagger-ui .opblock .opblock-summary-description, .swagger-ui .opblock-tag {
+
+    color:#d3d3d3;    
+}
+.swagger-ui table thead tr td, .swagger-ui table thead tr th,.swagger-ui .response-col_status, .swagger-ui {
+
+    color:#d3d3d3;   
+}
+.swagger-ui .opblock-description-wrapper p, .swagger-ui .opblock-external-docs-wrapper p, .swagger-ui .opblock-title_normal p,
+.swagger-ui .opblock .opblock-section-header h4{
+    color:#d3d3d3;   
+}
+.swagger-ui .opblock .opblock-section-header{
+    background: rgba(44, 29, 29, 0.8);
+}
+
+
+.swagger-ui .model-title, .swagger-ui .info .title {
+    font-family: 'Open Sans', sans-serif;
+}
+.swagger-ui .opblock-tag {
+    font-family: 'Open Sans', sans-serif;
+}
+.swagger-ui .opblock .opblock-summary-operation-id, .swagger-ui .opblock .opblock-summary-path, .swagger-ui .opblock .opblock-summary-path__deprecated {
+    font-family: 'Open Sans', sans-serif;
+
+}*/

@@ -1,0 +1,262 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Data API",
+        "description": "This API provides various functions to request data from our Warehouse.<br> <br><h2>Super Blitz vs Regular Blitz</h2><br>  when Super Blitz is enbaled a parent round is created to wrap around the blitzed rounds. Parent round contains the Debit and Credit Transaction Id's and has the type of BUYIN. Example. If you blitz 10x rounds. 11 rounds will be created. 1 parent round and 10 child rounds. <br>  <br> Once you have been onboarded you will recieve API keys to request data with. All operations on the API is tied to only your IntegrationId through the API Key",
+        "version": "v1"
+    },
+    "paths": {
+        "/api/data/v1/rounddetails": {
+            "get": {
+                "tags": [
+                    "Data"
+                ],
+                "summary": "Get Round Details",
+                "parameters": [
+                    {
+                        "name": "RoundId",
+                        "in": "query",
+                        "description": "Round to get the details URL for",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Locale",
+                        "in": "query",
+                        "description": "Locale used in the round history. (Limited Support)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetRoundDetailsResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetRoundDetailsResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetRoundDetailsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/data/v1/rounds": {
+            "get": {
+                "tags": [
+                    "Data"
+                ],
+                "summary": "To List rounds between a requested time interval with pagination support.\r\nSummary total bet and total won in the round.",
+                "parameters": [
+                    {
+                        "name": "StartDate",
+                        "in": "query",
+                        "description": "Start date time as UTC ISO string. Ex, 2020-11-01T07:00:00.000Z",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "EndDate",
+                        "in": "query",
+                        "description": "End date time as UTC ISO string. Ex, 2020-12-01T07:00:00.000Z",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "Take",
+                        "in": "query",
+                        "description": "How many items to retur / Take",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "Skip",
+                        "in": "query",
+                        "description": "Zero offset index of entire data set array / Skip",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetRoundsResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetRoundsResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetRoundsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "GetRoundDetailsResponse": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "Url round details.",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "GetRoundsResponse": {
+                "type": "object",
+                "properties": {
+                    "totalQuerySize": {
+                        "type": "integer",
+                        "description": "Size of entire query, Total amount.",
+                        "format": "int64"
+                    },
+                    "skip": {
+                        "type": "integer",
+                        "description": "startIndex, skip indicator, 0 based.",
+                        "format": "int32"
+                    },
+                    "take": {
+                        "type": "integer",
+                        "description": "fetchSize, take indicator, 0 based.",
+                        "format": "int32"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RoundData"
+                        },
+                        "description": "Array of round data specific to Genesis",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "RoundData": {
+                "type": "object",
+                "properties": {
+                    "roundId": {
+                        "type": "string",
+                        "description": "Unique identifier of the round id.\r\nRequired",
+                        "nullable": true
+                    },
+                    "parentRoundId": {
+                        "type": "string",
+                        "description": "If this was a Child round, played with Super BLITZ.",
+                        "nullable": true
+                    },
+                    "gameId": {
+                        "type": "string",
+                        "description": "Game Code of the game\r\nRequired",
+                        "nullable": true
+                    },
+                    "externalPlayerId": {
+                        "type": "string",
+                        "description": " Unique External Player Identifier\r\nRequired",
+                        "nullable": true
+                    },
+                    "currency": {
+                        "type": "string",
+                        "description": " 3-Letter currency code of the player id. ISO-4217 format\r\nRequired",
+                        "nullable": true
+                    },
+                    "balance": {
+                        "type": "number",
+                        "description": "Running Balance of the player \r\nRequired",
+                        "format": "double",
+                        "nullable": true
+                    },
+                    "totalBet": {
+                        "type": "number",
+                        "description": "Summary total amount bet (currency agnostic) in this round\r\nMonetary values are in cents and are expected to be in whole number.\r\nRequired",
+                        "format": "double",
+                        "nullable": true
+                    },
+                    "totalWon": {
+                        "type": "number",
+                        "description": "Amount won (currency agnostic) Summary total in this round.\r\nMonetary values are in cents and are expected to be in whole number\r\nRequired",
+                        "format": "double",
+                        "nullable": true
+                    },
+                    "roundType": {
+                        "type": "string",
+                        "description": "Possible values:\r\nREGULAR: Default value, for normal rounds\r\nPROMOTION: Free Spins/ Promotional round.\r\nBUYIN: Parent round, buyin for super blitz\r\nRequired",
+                        "nullable": true
+                    },
+                    "channel": {
+                        "type": "string",
+                        "description": "Player's device.\r\nPossible values: DESKTOP / MOBILE\r\nRequired",
+                        "nullable": true
+                    },
+                    "brand": {
+                        "type": "string",
+                        "description": "affiliate/merchant code of the player\r\nRequired",
+                        "nullable": true
+                    },
+                    "started": {
+                        "type": "string",
+                        "description": " Date time in UTC it was played\r\nRequired",
+                        "format": "date-time"
+                    },
+                    "debitTransactionId": {
+                        "type": "string",
+                        "description": "Debit Transaction Id, Note there can be multiple debit transaction id's linked to the round. Only first is listed here.\r\nRequired",
+                        "nullable": true
+                    },
+                    "creditTransactionId": {
+                        "type": "string",
+                        "description": "Credit Transaction Id, Note there can be multiple debit transaction id's linked to the round. Only first is listed here.\r\nIf null, the round is not completed.\r\nRequired",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "securitySchemes": {
+            "API Key": {
+                "type": "apiKey",
+                "description": "Authenticate with Apikey provided in header.",
+                "name": "X-Api-Key",
+                "in": "header"
+            }
+        }
+    }
+}

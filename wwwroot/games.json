@@ -1,0 +1,162 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Games API",
+    "description": "List games that are or will soon be available to you.",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/games": {
+      "get": {
+        "tags": [
+          "Games"
+        ],
+        "summary": "List All Games.",
+        "description": "List all games available to you or soon to be available.\r\n\r\nPlease make sure to honor the \"enabled\" flag. if game is listed as enabled = true it will start,if enabled = false it will not start.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Game"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Game"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Game"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Game": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Games string based id",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Games name.",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/GameType"
+          },
+          "supportedDenominations": {
+            "type": "string",
+            "description": "The denominations supported by this game.",
+            "nullable": true
+          },
+          "defaultDenominations": {
+            "type": "string",
+            "description": "The default denominations.",
+            "nullable": true
+          },
+          "maxCoins": {
+            "type": "integer",
+            "description": "Games max coins in bet.",
+            "format": "int32"
+          },
+          "maxLines": {
+            "type": "integer",
+            "description": "Max amount of lines in a bet",
+            "format": "int32"
+          },
+          "fixedLines": {
+            "type": "boolean",
+            "description": "If lines is fixed and cant be changed in a bet."
+          },
+          "fixedCoins": {
+            "type": "boolean",
+            "description": "If lines is fixed and cant be changed in a bet."
+          },
+          "freeGameSupport": {
+            "type": "boolean",
+            "description": "If the game supports free games."
+          },
+          "featureBuySupport": {
+            "type": "boolean",
+            "description": "If the game supports feature buy, either in game or through promotion."
+          },
+          "channels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Channels this game supports.",
+            "nullable": true
+          },
+          "earlyAccess": {
+            "type": "boolean",
+            "description": "If the game is in early access, this require that the player is on the game whitelist to start."
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "If the game is enabled for you."
+          },
+          "released": {
+            "type": "string",
+            "description": "When the game was released or Will be released.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "blockedCountries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of blocked countries. Game shouldn’t be shown and launched for users from these countries.\r\nThis is in addtion of the excluded territories list.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "View model for the game object exposed on the game api"
+      },
+      "GameType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "type": "integer",
+        "description": "Game Type, our designation of game types.<p>Possible values:</p>\r\n<ul>\r\n<li><b>0</b>: Swipie game</li>\r\n<li><b>1</b>: Slot Game</li>\r\n<li><b>2</b>: 5 Reel slot game</li>\r\n<li><b>3</b>: Grid Sot</li>\r\n<li><b>4</b>: Multiplayer Game</li>\r\n<li><b>5</b>: Pay Ways</li>\r\n<li><b>6</b>: 6 Reels</li>\r\n</ul>\r\n<p>Possible values:</p>\r\n<ul>\r\n</ul>\r\n",
+        "format": "int32"
+      }
+    },
+    "securitySchemes": {
+      "API Key": {
+        "type": "apiKey",
+        "description": "Authenticate with Apikey provided in header.",
+        "name": "X-Api-Key",
+        "in": "header"
+      }
+    }
+  }
+}

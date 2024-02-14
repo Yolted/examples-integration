@@ -1,0 +1,20 @@
+version: '3'
+
+networks:
+  dev:
+    external:
+      name: dev
+
+services:
+  testintegration1:
+    hostname: testintegration
+    image: shock.one/dragon/integrationsample:latest
+    ports:
+      - "127.0.0.1:5501:80"
+    environment:
+      - Kestrel__EndPoints__Http__Url=http://+:80;
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    networks:
+      - dev

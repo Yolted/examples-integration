@@ -1,0 +1,308 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Dragon Game Launcher",
+    "description": "Use this API to launch our games. Yolted games are intended to launch through an Iframe or object div.",
+    "version": "v1"
+  },
+  "paths": {
+    "/Launch": {
+      "get": {
+        "tags": [
+          "Launch"
+        ],
+        "summary": "Launch a Game.",
+        "description": "Is intended to be launched in an iframe or object div on your webpage.\r\n\r\nOr Iframe\r\n\r\n <iframe src=\"https://dc.yolted.com/Launch?IId=1&Token=2&GameId=crystalswipe&Channel=0&Context=mycoolpage&Practice=false&Dpr=2&RcCurrentSessionTime=20\"><iframe>\r\n\r\n\r\nin Object\r\n \r\n <object data=\"https://dc.yolted.com/Launch?IId=1&Token=2&GameId=crystalswipe&Channel=0&Context=mycoolpage&Practice=false&Dpr=2&RcCurrentSessionTime=20\"></object>",
+        "parameters": [
+          {
+            "name": "IId",
+            "in": "query",
+            "description": "Integration Id, provided to you by us.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Token",
+            "in": "query",
+            "description": "Token, a short lived single use token that you generate on your side and is then verified by you on the startgame request in your API implementation.",
+            "schema": {
+              "maxLength": 128,
+              "minLength": 4,
+              "type": "string"
+            }
+          },
+          {
+            "name": "GameId",
+            "in": "query",
+            "description": "GameId string that is provided to you by us as games are released.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Channel",
+            "in": "query",
+            "description": " Channel launching the game.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Channel"
+            }
+          },
+          {
+            "name": "Context",
+            "in": "query",
+            "description": "Context, set by you to determine where on your page a game was launched, can be used to set specific configuration for when launching on landingpages etc.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Practice",
+            "in": "query",
+            "description": "If game should be started in practice mode.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Dpr",
+            "in": "query",
+            "description": "Device pixel ratio. This allows us to launch the game in the best resolution, very important for highend devices or apple \"retina\" displays.\r\n\r\nThis needs to be passed from the top level window object.\r\nwindow.devicePixelRatio   if you have a wrapping iframe with proper CORS setup you can also pass read it in window.parent.devicePixelRatio\r\n\r\nNOTE! we cannot get this value from in side the game due to the CORS restrictions. If this is not passed correctly we will default to 1.",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "ExitUrl",
+            "in": "query",
+            "description": "Exit URL, if present the game will exit by redirecting to that once the exit button is pressed.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "LimitsUrl",
+            "in": "query",
+            "description": "Only used for SGA. Url to where player can set their limits in the operators system.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Lang",
+            "in": "query",
+            "description": "4 Letter ISO local code, used to determine what language the game will launch in.\r\n\r\nExample\r\n\r\nen_GB\r\nse_SV",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Jur",
+            "in": "query",
+            "description": "Jurisdiction the game is launched for.\r\nThis will remove/add features etc. to comply with specific jurisdiction.\r\n\r\nNote that you can use either the string representation or the numering in the request.\r\n\r\nCUW = 0\r\nMGA = 1\r\nSGA = 2\r\nDGA = 3",
+            "schema": {
+              "$ref": "#/components/schemas/Jurisdiction"
+            }
+          },
+          {
+            "name": "RcIntervalTime",
+            "in": "query",
+            "description": "Interval in seconds for the Responsible Gaming Reminder prompt.\r\nDefault value is 0/null which means it wont show.\r\nNote some jurisdictions has a different default value to comply with regulations.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "RcExitUrl",
+            "in": "query",
+            "description": "Url player will be exited to if using EXIT button in the Reality Check prompt.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "RcCurrentSessionTime",
+            "in": "query",
+            "description": "Time in seconds of current session, used to set the SGA bar and the start time for the reality check interval.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "RcAccountHistoryUrl",
+            "in": "query",
+            "description": "Account history url for the reality Check,",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SgaBar",
+            "in": "query",
+            "description": "If we should show SGA bar. By default we will assume you implement your own SGA bar.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Blitz",
+            "in": "query",
+            "description": "If the game should be started in blitz mode.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "DisplayClock",
+            "in": "query",
+            "description": "Show or hide ingame clock",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "PfrUrl",
+            "in": "query",
+            "description": "Url player will be exited to if pressing \"play for real\" button or pressing yes in pfr popup.\r\nThis is for the practice -> for real play promotion feature. Only relevant when practice is true.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PfrInterval",
+            "in": "query",
+            "description": "Interval in seconds between \"play for real\" pop up when activated. Default value is 120 seconds\r\n\r\nNote that PfrURL is required for this to work.\r\nThis is for the practice -> for real play promotion feature. Only relevant when practice is true.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PfrRounds",
+            "in": "query",
+            "description": "Amount of rounds before the first pop up appears. Default value is 5 rounds\r\n\r\nNote that PfrURL is required for this to work.\r\nThis is for the practice -> for real play promotion feature. Only relevant when practice is true.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Pfr",
+            "in": "query",
+            "description": "if PFR should be active. will through engage event if no url is provided.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Encode",
+            "in": "query",
+            "description": "If qp should be return encoded for some securtiy by obscurity...",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Message",
+            "in": "query",
+            "description": "Loading message, used for \"LICENSED BY\", note if on certain jursidiction this will be overriden.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "NoBrand",
+            "in": "query",
+            "description": "Hide all Branding in the game.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Pwrdby",
+            "in": "query",
+            "description": "pwrdby",
+            "schema": {
+              "$ref": "#/components/schemas/SubProvider"
+            }
+          },
+          {
+            "name": "HideExitButton",
+            "in": "query",
+            "description": "If the exit button should be hidden,\r\nnot all UI implementations supports this",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Rmmid",
+            "in": "query",
+            "description": "Requested Math ModelId",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Language",
+            "in": "query",
+            "description": "language override. if this is preset it will use this and the pass lang as locale",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Channel": {
+        "enum": [
+          "desktop",
+          "mobile"
+        ],
+        "type": "string",
+        "description": "The different channels that the games can be launched on. This controls certain behavior and placement of game elements as well as the UI of the game.",
+        "format": "string"
+      },
+      "Jurisdiction": {
+        "enum": [
+          "cuw",
+          "mga",
+          "sga",
+          "dga",
+          "ukgc",
+          "agcc",
+          "gsc"
+        ],
+        "type": "string",
+        "description": "The different jurisdictions.",
+        "format": "string"
+      },
+      "SubProvider": {
+        "enum": [
+          "1"
+        ],
+        "type": "string",
+        "description": "",
+        "format": "string"
+      }
+    }
+  }
+}
